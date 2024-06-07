@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import sklearn
 
 code_path = Path('/Users/jonathanvo/Documents/ECG Single Lead ML/Code')
-model_path = code_path / 'lightning_logs/version_57/checkpoints/epoch=45-step=276.ckpt'
+model_path = code_path / 'lightning_logs/version_61/checkpoints/epoch=45-step=276.ckpt'
 
 
 project = code_path / "Dataset"
@@ -48,6 +48,7 @@ if __name__ == '__main__':
             data_path=data_path,
             manifest_path=targets_file,
             labels="case",
+            first_lead_only=False
         )
     
     test_dl = DataLoader(
@@ -67,8 +68,8 @@ if __name__ == '__main__':
     print(f"AUC = {sklearn.metrics.roc_auc_score(targets,ecg_preds)}")
     print(f"95% CI = {roc_auc_ci(targets,ecg_preds)}")
     fpr, tpr, threshold = sklearn.metrics.roc_curve(targets,ecg_preds)
-    # plt.plot(fpr,tpr, label= f"AUC = {sklearn.metrics.roc_auc_score(targets,ecg_preds)}")
-    plt.plot(fpr,tpr, label= "External Set: AUC = 0.655 (95% CI: 0.628, 0.683)")
+    plt.plot(fpr,tpr, label= f"AUC = {sklearn.metrics.roc_auc_score(targets,ecg_preds)}")
+    # plt.plot(fpr,tpr, label= "External Set: AUC = 0.655 (95% CI: 0.628, 0.683)")
     plt.xlabel('1-Specificity')
     plt.ylabel('Sensitivity')
     plt.legend()

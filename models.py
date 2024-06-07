@@ -19,7 +19,7 @@ class EffNet(nn.Module):
         stride: int = 8,
         expansion: int = 6,
         embedding_hook: bool = False,
-        input_channels: int = 1,
+        input_channels: int = 12,
     ):
         super().__init__()
 

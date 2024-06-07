@@ -62,7 +62,7 @@ class BinaryClassificationModel(pl.LightningModule):
         self.training_steps = 0
         self.steps_since_checkpoint = 0
         self.labels = index_labels
-        self.save_hyperparameters()
+        # self.save_hyperparameters()
         if self.labels is not None and isinstance(self.labels, str):
             self.labels = [self.labels]
         self.save_predictions_path = save_predictions_path

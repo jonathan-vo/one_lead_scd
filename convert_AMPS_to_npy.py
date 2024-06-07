@@ -39,7 +39,7 @@ if output.exists():
 output.mkdir()
 
 # set to true to attempt to generate plots of what this code is doing to the waveforms.
-do_plot = True
+do_plot = False
 has_plotted = False
 num_saved = 0
 num_discarded = 0
@@ -105,8 +105,8 @@ with tqdm.tqdm(len(filelist)) as bar:
         if not (any(x < longest_clip_length / 3 for x in clip_lengths)):
             num_without_rhythm += 1
 
-        #if do_plot:
-         #   plot_ecg(np.stack(leads), "pngs/og.png")
+        if do_plot:
+            plot_ecg(np.stack(leads), "pngs/og.png")
         # Somewhat obtuse code for lining up all of the channels' starts and then scaling them all
         # so that they're at least 1250 in length, then cutting off everything after 1250.
         blank = np.zeros((12, 5000))
@@ -133,8 +133,8 @@ with tqdm.tqdm(len(filelist)) as bar:
 
             blank[i] = resampled
 
-       # if do_plot:
-       #     plot_ecg(np.stack(leads), "pngs/resampled.png")
+        if do_plot:
+            plot_ecg(np.stack(leads), "pngs/resampled.png")
         # final input size to the model is 12 x 1250
         waveforms = blank[:, :1250]
 
@@ -146,7 +146,7 @@ with tqdm.tqdm(len(filelist)) as bar:
             plot_ecg(waveforms, "/Users/jonathanvo/Documents/ECG Single Lead ML/Code/Dataset/Plots")
             has_plotted = True
         bar.text = f"D: {num_discarded}, NR: {num_without_rhythm}"
-       # bar()
+        # bar()
 
 manifest_removed.to_csv(project / "Dataset/Manifest/DigitizedECGs_ExternalReplication_5_10_2022_removed.csv")
 print(f"Saved: {num_saved}, Discarded: {num_discarded}, Total: {len(filelist)}")

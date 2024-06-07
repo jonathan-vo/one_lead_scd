@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List, Union
-
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
@@ -44,7 +44,7 @@ class ECGDataset(Dataset):
         self.first_lead_only = first_lead_only
 
     def read_file(self, filepath):
-        #Function reads waveform files converted by convert_AMPS_to_npy script
+        #Function reads waveform file y-values converted by convert_AMPS_to_npy script
         file = np.load(filepath)
         if file.shape[0] != 12:
             file = file.T
@@ -52,8 +52,17 @@ class ECGDataset(Dataset):
 
         if self.first_lead_only:
             file = file[0:1]
-
+        
         return file
+    
+    def plt_ecg(self,filepath,lead_number):
+        file = np.load(filepath)
+        if file.shape[0] != 12:
+            file = file.T
+        file = torch.tensor(file).float()
+        file = file[lead_number]
+        x_values = np.arange(0,len(file),1)
+        plt.plot(x_values, file)
 
     def __len__(self):
         return len(self.manifest)
